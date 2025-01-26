@@ -1,0 +1,1 @@
+g++ -o main -Iinclude main.cpp src/sort_array.cpp
