@@ -1,6 +1,4 @@
 import unittest
-import sys
-sys.path.append("build/bindings")
 import sort_array
 
 class TestSortArray(unittest.TestCase):

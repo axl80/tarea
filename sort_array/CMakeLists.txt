@@ -1,13 +1,12 @@
 # Add Python executable detection
-set(BINDINGS_DIR ${CMAKE_SOURCE_DIR}/bindings)
 
 # Add a custom target to run setup.py
 add_custom_target(build_python_bindings ALL
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    COMMAND python setup.py build_ext
+    COMMAND python setup.py bdist_wheel
     DEPENDS 
         sort_array
-        "${BINDINGS_DIR}/sort_array.pyx"
+        "${CMAKE_SOURCE_DIR}/sort_array/_core.pyx"
         "${CMAKE_SOURCE_DIR}/setup.py"
     COMMENT "Building Python bindings with setup.py"
 )

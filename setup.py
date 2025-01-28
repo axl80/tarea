@@ -1,29 +1,23 @@
 from setuptools import setup, Extension
 from Cython.Build import cythonize
-import os
-
-OUTPUT_DIR = "build/bindings"
-MODULE_NAME = "sort_array"
 
 extensions = [
     Extension(
-        MODULE_NAME,                   # Name of the module
-        sources=["bindings/sort_array.pyx"],
+        "sort_array._core",
+        sources=["sort_array/_core.pyx"],
         include_dirs=["include"],
-        library_dirs=["build/src"],  # Path to the static library
-        libraries=["sort_array"],    # Name of the static library
+        library_dirs=["build/src"],
+        libraries=["sort_array"],
         language="c++"
-    )   
+    )
 ]
 
 setup(
-    name=MODULE_NAME,
+    name="sort_array",
     version="0.1.0",
-    ext_modules=cythonize(extensions, build_dir=OUTPUT_DIR),
-    options={
-        'build_ext': {
-            'build_lib': OUTPUT_DIR,  # Output directory for the .so file
-            'build_temp': f'{OUTPUT_DIR}/temp'
-        },
-    },
+    author="Abraham Sotelo",
+    description="Python binding for C++ sort_array library",
+    ext_modules=cythonize(extensions),
+    packages=["sort_array"],
+    package_dir={"sort_array": "sort_array"},
 )
