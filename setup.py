@@ -8,16 +8,12 @@ MODULE_NAME = "sort_array"
 extensions = [
     Extension(
         MODULE_NAME,                   # Name of the module
-        sources=[
-            os.path.join("bindings", "sort_array.pyx"),  # Cython source
-            os.path.join("src", "sort_array.cpp"),       # C++ source
-        ],
-        include_dirs=[
-            os.path.join("include"),    # Path to sort_array.h
-        ],
-        language="c++",
-        extra_compile_args=["-std=c++11"],
-    )
+        sources=["bindings/sort_array.pyx"],
+        include_dirs=["include"],
+        library_dirs=["build/src"],  # Path to the static library
+        libraries=["sort_array"],    # Name of the static library
+        language="c++"
+    )   
 ]
 
 setup(
