@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
 # Install Python dependencies
 RUN python3 -m venv /venv &&\
     . /venv/bin/activate &&\
-    pip install cython setuptools build wheel
+    pip install cython build wheel setuptools
 
 COPY . /ci
 WORKDIR /ci

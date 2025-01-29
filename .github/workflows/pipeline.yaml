@@ -1,5 +1,5 @@
 name: Pipeline
-run-name: "Build: # ${{ github.run_number }}"
+run-name: "Build: # ${{ github.run_number }} - ${{ github.event.head_commit.message }}"
 on: [push]
 
 jobs:
@@ -29,13 +29,17 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set Image Tag
-        run: echo "IMAGE_TAG=sort_array:latest" >> $GITHUB_ENV
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and Push Docker Image with Kaniko
         uses: int128/kaniko-action@v1
         with:
-          push: false
+          push: true
+          tags: ${{ secrets.REGISTRY_URL }}/sort_array:latest
 
   build-package:
     name: Build
