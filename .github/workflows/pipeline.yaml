@@ -29,10 +29,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Building Docker image
-        run: |
-          echo "Building docker."
-          sleep 30
+      - name: Set Image Tag
+        run: echo "IMAGE_TAG=sort_array:latest" >> $GITHUB_ENV
+
+      - name: Build and Push Docker Image with Kaniko
+        uses: int128/kaniko-action@v1
+        with:
+          push: false
 
   build-package:
     name: Build
