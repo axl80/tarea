@@ -1,7 +1,9 @@
 name: Pipeline
 run-name: "Build: # ${{ github.run_number }} - ${{ github.event.head_commit.message }}"
 on: [push]
-
+permissions:
+  contents: write
+  
 jobs:
   check-changes:
     name: Check dockerfile changes
@@ -76,3 +78,11 @@ jobs:
           pwd
           pip install $(ls ../dist/sort_array-*.whl) --force-reinstall
           python -m unittest discover -s ../tests/python -v
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          tag_name: "0.1.0"
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
