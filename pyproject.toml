@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "cython>=3.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sort_array"
+version = "0.1.0"
+authors = [
+    {name = "Abraham Sotelo", email = "asoteloa@outlook.com"},
+]
+description = "Python binding for C++ sort_array library"
+readme = "README.md"
+
+[tool.setuptools]
+packages = ["sort_array"]
+package-dir = {"sort_array" = "sort_array"}
+
+[tool.setuptools.package-data]
+sort_array = ["*.so"]
+
+[[tool.setuptools.ext-modules]]
+name = "sort_array._core"
+sources = ["sort_array/_core.pyx"]
+include-dirs = ["include"]
+library-dirs = ["build/src"]
+libraries = ["sort_array"]
+language = "c++"

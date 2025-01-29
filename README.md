@@ -16,3 +16,6 @@ ctest
 pip install ../dist/sort_array-0.1.0-cp312-cp312-linux_x86_64.whl
 python -m unittest discover -s ../tests/python
 ```
+
+## Build and run tests
+`./build_script.sh`
