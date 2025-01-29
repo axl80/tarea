@@ -75,7 +75,6 @@ jobs:
         run: |
           . /venv/bin/activate
           cd build
-          pwd
           pip install $(ls ../dist/sort_array-*.whl) --force-reinstall
           python -m unittest discover -s ../tests/python -v
       - name: Publish
@@ -86,3 +85,19 @@ jobs:
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+
+  performance:
+    name: Performance test
+    runs-on: ubuntu-latest
+    needs: build-package
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Install sort_array wheel
+        run: |
+          wget https://github.com/80sax/build_eng/releases/download/0.1.0/sort_array-0.1.0-cp312-cp312-linux_x86_64.whl
+          pip install sort_array-0.1.0-cp312-cp312-linux_x86_64.whl
+      - name: Run performance test
+        run: |
+          cd tests
+          python ./performance_test.py
