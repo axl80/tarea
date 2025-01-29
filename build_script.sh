@@ -1,7 +1,8 @@
 #!/bin/bash
 . /venv/bin/activate
 cd $(dirname $0)
-./clean.sh
+cp -r /unity tests/cxx/unity
+mkdir -p build
 cd build
 cmake -G Ninja ..
 ninja

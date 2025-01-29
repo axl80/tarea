@@ -19,7 +19,8 @@ jobs:
           filters: |
             dockerfile:
               - 'Dockerfile'
-  
+
+
   build-docker:
     name: Build docker image
     runs-on: ubuntu-latest
@@ -41,16 +42,37 @@ jobs:
           push: true
           tags: ${{ secrets.REGISTRY_URL }}/sort_array:latest
 
+
   build-package:
-    name: Build
+    name: Build Python wheel
     runs-on: ubuntu-latest
+    container: docker.io/asoteloa/sort_array:latest
     needs: [check-changes, build-docker]
     if: always()
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-
-      - name: Build Python package
+      - name: Preparing environment
         run: |
-          echo "Building Python package"
-
+          cp -r /unity tests/cxx/unity
+          mkdir -p build
+      - name: Build CMake project
+        run: |
+          cd build
+          cmake -G Ninja ..
+      - name: Build Python wheel
+        run: |
+          . /venv/bin/activate
+          cd build
+          ninja
+      - name: Test C++
+        run: |
+          cd build
+          ctest -V
+      - name: Test python
+        run: |
+          . /venv/bin/activate
+          cd build
+          pwd
+          pip install $(ls ../dist/sort_array-*.whl) --force-reinstall
+          python -m unittest discover -s ../tests/python -v
